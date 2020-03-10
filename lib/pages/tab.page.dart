@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../providers/theme.provider.dart';
+import '../providers/firebase.provider.dart';
 import './login.page.dart';
 
 class TabPage extends StatefulWidget {
@@ -21,9 +22,11 @@ class _TabPage extends State<TabPage> {
     LoginPage(title: 'se text 3')
   ];
 
+  final FirebaseProvider firebase = new FirebaseProvider();
+
   @override
   Widget build(BuildContext context) {
-
+    
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -36,7 +39,7 @@ class _TabPage extends State<TabPage> {
             title: new Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.mail),
+            icon: new Icon(Icons.favorite),
             title: new Text('Messages'),
           ),
           BottomNavigationBarItem(
@@ -54,6 +57,7 @@ class _TabPage extends State<TabPage> {
   }
 
   void onTabChanged(int index) {
+    firebase.sendAnalyticsEvent('STATE_CHANGE', 'The state got changed to ' + index.toString());
     setState(() {
       _currentIndex = index;
     });
